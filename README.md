@@ -17,15 +17,15 @@ The code in this repo is mostly python, and is easily pip installable.
    1. `sbrl`: includes all source code
    2. `configs`: Configuration files for various experiments and sub-modules (`configs/README.md`).
 5. Under `sbrl/envs`, download and unzip assets using: `gdown https://drive.google.com/uc?id=<FILE ON DRIVE>`
-   1. latest: June 2022: `FILE_ID = 1TR0ph1uUmtWFYJr8B0yo1hASjj0cP8fc`
+   1. `assets`: `FILE_ID = 1TR0ph1uUmtWFYJr8B0yo1hASjj0cP8fc` (latest: Jun 22)
 6. Create several additional directories in the root:
    1. `data/`: This will store all the data
    2. `experiments/`: This is where runs will log and write models to.
    3. `plots/`: (optional)
    4. `videos/`: (optional)
 7. Under `data/`, download and unzip data folders by environment:
-   1. `stackBlock2D`: `FILE_ID = 1djnfM59b8DSMALS3TTy-p4IQD86I2sG8`
-   2. `block3D`: `FILE_ID = 1nsoLKXC0PCdi_h3F1pkjyOhaYdS3Etei`
+   1. `stackBlock2D`: `FILE_ID = 1djnfM59b8DSMALS3TTy-p4IQD86I2sG8` (latest: Dec 22)
+   2. `block3D`: `FILE_ID = 1nsoLKXC0PCdi_h3F1pkjyOhaYdS3Etei` (latest: Dec 22)
 
 All set up!
 
@@ -191,11 +191,10 @@ python sbrl/envs/block2d/stack_block_env_2d.py
 
 All scripted data is found under `data/`:
 
-**BlockEnv3D-Platform**: `data/block3D/scripted_multiplay_multishape_uv_yawlim_randstart_diverse_push_lift_ud.npz`
-**MugEnv3D-Platform**: `data/block3D/scripted_multiplay_multishape_mug_fo_aw_ml_uv_yawlim_randstart_diverse_toprot_push_lift_ud_2mil.npz`
-**Playroom3D**: `data/block3D/scripted_multiplay_multishape_uv_randstart_diverse_push_drawer_cabinet_sequential_2mil.npz`
-**Playroom3D+Buttons**: `data/block3D/scripted_multiplay_multishape_uv_randstart_diverse_push_drawer_cabinet_button_sequential_2mil.npz`
-
+**BlockEnv3D-Platform**: `data/block3D/scripted_multiplay_multishape_uv_yawlim_randstart_diverse_push_lift_ud.npz`\
+**MugEnv3D-Platform**: `data/block3D/scripted_multiplay_multishape_mug_fo_aw_ml_uv_yawlim_randstart_diverse_toprot_push_lift_ud_2mil.npz`\
+**Playroom3D**: `data/block3D/scripted_multiplay_multishape_uv_randstart_diverse_push_drawer_cabinet_sequential_2mil.npz`\
+**Playroom3D+Buttons**: `data/block3D/scripted_multiplay_multishape_uv_randstart_diverse_push_drawer_cabinet_button_sequential_2mil.npz`\
 **StackBlockEnv2D**: `data/stackBlock2D/scripted_multiplay_multishape_named_push_pull_tipsrot_balanced_success_c.npz`
 
 Each of the above has a corresponding validation dataset, suffixed by `_val`.
@@ -287,3 +286,12 @@ python scripts/eval_play.py --num_eps 500 --num_proc 10 configs/exp_lfp/base_3d_
 **NOTE**: NUM_EPS must be divisible by NUM_PROC.
 
 Here, policy hardcoded is told to run the playroom environment with the drawer primitive, pushing, button pressing, and randomized motion for each to generate diverse goals.
+
+For 2D environment, use: `%policy_hardcoded configs/data_collect/stackblock2d_policy_config.py --use_rotate --oversample_rot --single_policy`
+
+For the 3D block environment, use: 
+`%policy_hardcoded configs/data_collect/block3d_policy_config.py --do_lift --no_pull --random_motion --uniform_velocity --lift_sample --single_policy`
+
+With mugs, same config as above, but args are: `--no_push --do_lift --lift_sample --use_rotate --random_motion --uniform_velocity --more_lift --mug_rot_allow_wall`
+
+For regular playroom, just remove `--use_buttons` flag from the template command.
