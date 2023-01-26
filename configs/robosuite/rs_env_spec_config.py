@@ -29,6 +29,7 @@ def declare_arguments(parser=ArgumentParser()):
     parser.add_argument("--include_real", action='store_true')
     parser.add_argument("--include_click_state", action='store_true')
     parser.add_argument("--include_target_names", action='store_true')
+    parser.add_argument("--include_target_gripper", action='store_true')
     return parser
 
 
@@ -44,7 +45,8 @@ def process_params(group_name, common_params):
     env_prms = common_params >> "env_train"
 
     env_spec_params = get_rs_example_spec_params(env_prms >> "env_name", img_width=env_prms >> "img_width",
-                                                 img_height=env_prms >> "img_height", minimal=prms >> "minimal")
+                                                 img_height=env_prms >> "img_height", no_names=prms >> 'no_names',
+                                                 minimal=prms >> "minimal")
 
     # fill in presets
     add_final_names = prms >> "add_final_names"
@@ -90,6 +92,9 @@ def process_params(group_name, common_params):
 
     if prms >> 'include_target_names':
         env_spec_params.action_names.extend(['target/position', 'target/orientation', 'target/orientation_eul'])
+
+    if prms >> 'include_target_gripper':
+        env_spec_params.action_names.extend(['target/gripper'])
 
     env_spec_params = AttrDict(
         cls=ParamEnvSpec,
